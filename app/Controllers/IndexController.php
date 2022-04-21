@@ -14,6 +14,7 @@ class IndexController extends Controller
      */
     public function index()
     {
-        $this->view->render('main', 'base');
+        // рендерим страницу со статьей
+        $this->view->render('article');
     }
 }
