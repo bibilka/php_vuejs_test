@@ -1,5 +1,5 @@
 # PHP VueJs Test
-Тестовое задание: PHP (native) + VueJS
+Тестовое задание: PHP MVC (native) + VueJS
 
 ## Требования
 - [Docker](https://www.docker.com)
