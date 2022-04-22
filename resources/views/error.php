@@ -1,3 +1,3 @@
 <?php include ('partials/header.php');?>
-<h1>404 Not Found</h1>
+<h1><?= $message ?></h1>
 <?php include ('partials/footer.php');?>

@@ -8,5 +8,7 @@
             "app/helpers.php" 
         ]
     },
-    "require": {}
+    "require": {
+        "robmorgan/phinx": "^0.12.10"
+    }
 }

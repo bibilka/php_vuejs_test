@@ -20,17 +20,77 @@
     <p>Вот вам яркий пример современных тенденций - базовый вектор развития является качественно новой ступенью вывода текущих активов. Являясь всего лишь частью общей картины, стремящиеся вытеснить традиционное производство, нанотехнологии, превозмогая сложившуюся непростую экономическую ситуацию, подвергнуты целой серии независимых исследований.
     </p>
   </div>
+  <br><h3>Комментарии: </h3>
+  <hr>
+  <div id="comments">
+    <div class="row">
+      <div class="col">
+        <div class="card" v-for="comment in comments" :key="comment.id">
+          <div class="card-body">
+            <h5 class="card-title">{{ comment.title }} <small class="text-muted">({{ comment.created_at }})</small></h5>
+            <p class="card-text" style="padding-bottom:1rem;">
+              {{ comment.comment }}
+            </p>
+            <footer class="blockquote-footer">{{ comment.username }} ({{ comment.email }})</footer>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+      <form @submit="addComment">
+        <h3>Добавить комментарий</h3>
+        <div class="row">
+          <div class="col form-group">
+            <label for="exampleFormControlInput1">Ваше имя</label>
+            <input v-model="comment.username" type="text" class="form-control" placeholder="Укажите ваше имя">
+          </div>
+          <div class="col form-group">
+            <label for="exampleFormControlInput1">E-mail</label>
+            <input v-model="comment.email" type="email" class="form-control" placeholder="Укажите ваш email-адрес">
+          </div>
+        </div>
+        <br>
+        <div class="form-group">
+          <label for="exampleFormControlInput1"><b>Заголовк</b></label>
+          <input v-model="comment.title" type="text" class="form-control" placeholder="Укажите заголовок комментария">
+        </div>
+        <div class="form-group">
+          <label for="exampleFormControlTextarea1">Комментарий</label>
+          <textarea v-model="comment.comment" class="form-control" rows="3"></textarea>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col">
+            <button type="submit" class="btn btn-primary w-50">Отправить</button>
+          </div>
+        </div>
+      </form>
+      </div>
+    </div>
+  </div>
+
 </div>
 <script>
   var app = new Vue({
     el: "#app",
     data: {
-      comments: []
+      comments: [],
+      comment: {
+        username: '',
+        email: '',
+        title: '',
+        comment: '',
+      }
     },
     methods: {
       getComments: function() {
         axios.get('/api/getComments').then(function (response) {
-          console.log(response);
+          app.comments = response.data.data;
+        });
+      },
+      addComment: function(e) {
+        e.preventDefault();
+        axios.post('/api/addComment', this.comment).then(function (response) {
+          console.log(response)
         });
       }
     },

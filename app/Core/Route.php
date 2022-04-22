@@ -33,7 +33,7 @@ class Route
 		$controllerName = '\\App\Controllers\\' . $controllerName . 'Controller';
 		if (!class_exists($controllerName)) {
 			// если такой не существует - выводим 404 страницу
-			return Route::errorPage404();
+			return Route::errorPage(404);
 		}
 		
 		// создаем контроллер
@@ -42,7 +42,7 @@ class Route
 
 		// проверяем существование метода
 		if (!method_exists($controller, $action)) {
-			return Route::errorPage404();
+			return Route::errorPage(404);
 		}
 		
 		// вызываем действие контроллера
@@ -50,13 +50,12 @@ class Route
 	}
 	
 	/**
-	 * Рендеринг 404 ошибки.
+	 * Рендеринг страницы ошибки.
 	 * @return mixed
 	 */
-	public static function errorPage404()
+	public static function errorPage(int $statusCode = 404, string $message = '404 Not Found')
 	{
-        header('HTTP/1.1 404 Not Found');
-		header("Status: 404 Not Found");
-		(new View)->render('404');
+        http_response_code($statusCode);
+		(new View)->render('error', compact('message'));
     }
 }
