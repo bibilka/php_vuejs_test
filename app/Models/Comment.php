@@ -38,7 +38,7 @@ class Comment extends Model
         }
         
         // текст комментария
-        if (!isset($attributes['comment']) || strlen($attributes['comment']) <= 4 || strlen($attributes['comment']) > 500) {
+        if (!isset($attributes['comment']) || strlen(trim($attributes['comment'])) <= 4 || strlen(trim($attributes['comment'])) > 500) {
             return false;
         }
 

@@ -38,8 +38,8 @@
             <footer class="blockquote-footer">{{ comment.username }} ({{ comment.email }})</footer>
           </div>
         </div><br>
-        <button v-if="comments.length != commentsToShow" type="button" class="btn" @click="commentsToShow += 1">Показать больше</button>
-        <button v-else type="button" class="btn" @click="commentsToShow = 3">Скрыть</button>
+        <button v-if="comments.length > commentsToShow" type="button" class="btn" @click="commentsToShow += 1">Показать больше</button>
+        <button v-else-if="comments.length > 3" type="button" class="btn" @click="commentsToShow = 3">Скрыть</button>
       </div>
       <div class="col">
       <div v-if="hasSucces" class="alert alert-success alert-dismissible fade show" role="alert">
@@ -106,7 +106,7 @@
           <label class="control-label">Комментарий</label>
           <textarea 
             v-model="comment.comment"
-            v-validate="{ required: true, min: 5, max: 500}" 
+            v-validate="{ required: true, min: 5, max: 250}" 
             name="comment"
             v-bind:class="{ 'is-invalid': errors.has('comment') }"
             class="form-control" 

@@ -1,0 +1,49 @@
+[1mdiff --git a/app/Controllers/ApiController.php b/app/Controllers/ApiController.php[m
+[1mindex 6317e97..48d5b4c 100644[m
+[1m--- a/app/Controllers/ApiController.php[m
+[1m+++ b/app/Controllers/ApiController.php[m
+[36m@@ -30,6 +30,7 @@[m [mclass ApiController extends Controller[m
+      */[m
+     public function getComments()[m
+     {[m
+[32m+[m[32m        // $this->comments->delete();[m
+         return successResponse($this->comments->all());[m
+     }[m
+ [m
+[1mdiff --git a/app/Models/Comment.php b/app/Models/Comment.php[m
+[1mindex a1f300a..456280a 100644[m
+[1m--- a/app/Models/Comment.php[m
+[1m+++ b/app/Models/Comment.php[m
+[36m@@ -38,7 +38,7 @@[m [mclass Comment extends Model[m
+         }[m
+         [m
+         // текст комментария[m
+[31m-        if (!isset($attributes['comment']) || strlen($attributes['comment']) <= 4 || strlen($attributes['comment']) > 500) {[m
+[32m+[m[32m        if (!isset($attributes['comment']) || strlen(trim($attributes['comment'])) <= 4 || strlen(trim($attributes['comment'])) > 500) {[m
+             return false;[m
+         }[m
+ [m
+[1mdiff --git a/resources/views/article.php b/resources/views/article.php[m
+[1mindex 2f04091..bfbbff9 100644[m
+[1m--- a/resources/views/article.php[m
+[1m+++ b/resources/views/article.php[m
+[36m@@ -38,8 +38,8 @@[m
+             <footer class="blockquote-footer">{{ comment.username }} ({{ comment.email }})</footer>[m
+           </div>[m
+         </div><br>[m
+[31m-        <button v-if="comments.length != commentsToShow" type="button" class="btn" @click="commentsToShow += 1">Показать больше</button>[m
+[31m-        <button v-else type="button" class="btn" @click="commentsToShow = 3">Скрыть</button>[m
+[32m+[m[32m        <button v-if="comments.length > commentsToShow" type="button" class="btn" @click="commentsToShow += 1">Показать больше</button>[m
+[32m+[m[32m        <button v-else-if="comments.length > 3" type="button" class="btn" @click="commentsToShow = 3">Скрыть</button>[m
+       </div>[m
+       <div class="col">[m
+       <div v-if="hasSucces" class="alert alert-success alert-dismissible fade show" role="alert">[m
+[36m@@ -106,7 +106,7 @@[m
+           <label class="control-label">Комментарий</label>[m
+           <textarea [m
+             v-model="comment.comment"[m
+[31m-            v-validate="{ required: true, min: 5, max: 500}" [m
+[32m+[m[32m            v-validate="{ required: true, min: 5, max: 250}"[m[41m [m
+             name="comment"[m
+             v-bind:class="{ 'is-invalid': errors.has('comment') }"[m
+             class="form-control" [m
