@@ -30,15 +30,6 @@ class ApiController extends Controller
      */
     public function getComments()
     {
-        // $this->comments->delete();
-        // $this->comments->create([
-        //     'username' => 'Alex',
-        //     'email' => 'test@mail.ru',
-        //     'created_at' => date('Y-m-d H:i:s'),
-        //     'title' => 'Комментарий #1',
-        //     'comment' => 'С учётом сложившейся международной обстановки, консультация с широким активом требует от нас анализа своевременного выполнения сверхзадачи. Как принято считать, активно развивающиеся страны третьего мира представляют собой не что иное, как квинтэссенцию победы маркетинга над разумом и должны быть описаны максимально подробно. Задача организации, в особенности же реализация намеченных плановых заданий однозначно фиксирует необходимость прогресса профессионального сообщества.'
-        // ]);
-
         return successResponse($this->comments->all());
     }
 
@@ -58,7 +49,7 @@ class ApiController extends Controller
         
         // создаем комментарий и возвращаем ответ
         return $this->comments->create($comment) ? 
-            successResponse([], 'Комментарий успешно добавлен!') :
+            successResponse($comment, 'Комментарий успешно добавлен!') :
             errorResponse();
     }
 }

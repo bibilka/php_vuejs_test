@@ -5,9 +5,7 @@ namespace App\Core;
 /**
  * Класс-обработчик ошибок и исключений, вызываемых (генериуремых) во время работы приложения.
  * 
- * @todo: в этих обработчиках еще надо по-хорошему:
- * 1. проверять ENV_DEBUG и в зависимости от этого менять сообщение/формат сообщения
- * 2. определять статус (код) ошибки
+ * @todo: в этих обработчиках еще надо по-хорошему: проверять ENV_DEBUG и в зависимости от этого менять сообщение/формат сообщения
  */
 class Handler
 {
@@ -36,7 +34,9 @@ class Handler
     public static function exception(\Throwable $ex)
     {
         $message = $ex->getMessage();
-        return self::requestWantsJson() ? errorResponse(500, $message) : Route::errorPage(500, $message);
+        $code = $ex->getCode();
+
+        return self::requestWantsJson() ? errorResponse($code, $message) : Route::errorPage($code, $message);
     }
 
     /**

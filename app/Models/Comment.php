@@ -22,4 +22,31 @@ class Comment extends Model
      * @var string $table Название таблицы в базе данных
      */
     protected string $table = 'comments';
+
+    /**
+     * Валидация значений, перед сохранением комментария.
+     * @param array $attributes Данные.
+     * @return bool
+     */
+    public function validate(array $attributes = []) : bool
+    {
+        // валидация текстовых значений на размер
+        foreach (['username', 'email', 'title'] as $field) {
+            if (!isset($attributes[$field]) || strlen($attributes[$field]) <= 2 || strlen($attributes[$field]) > 100) {
+                return false;
+            }
+        }
+        
+        // текст комментария
+        if (!isset($attributes['comment']) || strlen($attributes['comment']) <= 4 || strlen($attributes['comment']) > 500) {
+            return false;
+        }
+
+        // валидация email
+        if (!filter_var($attributes['email'], FILTER_VALIDATE_EMAIL)) {
+            return false;
+        }
+
+        return true;
+    }
 }

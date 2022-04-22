@@ -2,6 +2,7 @@
 
 namespace App\Core;
 
+use App\Exceptions\ValidationException;
 use PDO;
 
 /**
@@ -34,16 +35,27 @@ abstract class Model
     }
 
     /**
+     * Валидация значений, перед сохранением объекта.
+     * @param array $attributes
+     * @return bool 
+     */
+    abstract public function validate(array $attributes = []) : bool;
+
+    /**
      * Создать новый объект (добавляет запись в базу данных).
      * 
      * @param array $attributes Массив данных, где ключ - наименование атрибута, значение - значение этого атрибута
      * 
      * @throws \PDOException
+     * @throws \App\Exceptions\ValidationException
      * 
      * @return bool
      */
     public function create(array $attributes)
     {
+        if (!$this->validate($attributes))
+            throw new ValidationException;
+        
         $columns = implode(', ', $this->columns);
         
         $valuesPlaceHolder = [];
